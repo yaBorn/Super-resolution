@@ -1,8 +1,6 @@
 """
     图形界面
 """
-
-import tkinter as tk  # 使用Tkinter_GUI包
 from GUI_func import *  # 按键回调函数
 
 window = tk.Tk()  # 实例化object，建立窗口window
@@ -14,10 +12,23 @@ title = tk.Label(window, text='你好！this is title', bg='green', font=('Arial
 # 说明： bg为背景，font为字体，width为长，height为高，这里的是字符的长和高
 title.pack()
 
+''' 输入路径 '''
+title_input = tk.Label(window, text='输入路径：', font=('Arial', 11), width=30, height=2)
+title_input.pack()
+#title_input.place(relx=0.1, rely=0.25, relwidth=0.8)
+
+text_input = tk.Entry(window, show=None, state='normal')  # 无密文 可写
+text_input.insert(0, "未选择...")  # 写入文本
+text_input.config(state='readonly')  # 写入后设为只读
+text_input.pack()
+#text_input.place(relx=0.1, rely=0.25, relwidth=0.8)
+
+
 ''' 选择文件按钮'''
-chooseFile = tk.Button(window, text='选择文件', font=('Arial', 12), width=10, height=1, command=func_chooseFile)
-# command是按钮回调函数
-chooseFile.pack()
+button_chooseFile = tk.Button(window, text='选择文件', font=('Arial', 11), width=10, height=1,
+                              command=lambda: func_chooseFile(entry=text_input))
+# command是按钮回调函数 lambda: 传递参数
+button_chooseFile.pack()
 
 # 主窗口循环显示
 window.mainloop()
