@@ -39,6 +39,19 @@ button_chooseFile = tk.Button(window, text='选择文件', font=('Arial', 11), w
 button_chooseFile.pack()
 
 
+''' 视频/图像超分 单选'''
+
+# 创建n个radiobutton选项
+# 其中variable=var,
+# value='A'的意思就是，当鼠标选中了其中一个选项，把value赋值variable
+r_vi = 1
+radio_vi = tk.Radiobutton(window, text='视频', variable=r_vi, value=0,
+                          command=lambda: func_VideoImage(ch=0))
+radio_vi.pack()
+radio_vi2 = tk.Radiobutton(window, text='图像', variable=r_vi, value=1,
+                           command=lambda: func_VideoImage(ch=1))
+radio_vi2.pack()
+
 
 # 主窗口循环显示
 window.mainloop()
