@@ -2,19 +2,22 @@
     图形界面
 """
 
-import tkinter as GUI  # 使用Tkinter_GUI包
+import tkinter as tk  # 使用Tkinter_GUI包
+from GUI_func import *  # 按键回调函数
 
-window = GUI.Tk()  # 实例化object，建立窗口window
-window.title('My Window')  # 窗口名
+window = tk.Tk()  # 实例化object，建立窗口window
+window.title('Super-resolution')  # 窗口名
 window.geometry('800x800')  # 设定窗口的大小(长x宽)
 
-# 在界面上设定标签
-mylabel = GUI.Label(window, text='你好！this is Tkinter', bg='green', font=('Arial', 12), width=30, height=2)
-# 说明： bg为背景，font为字体，width为长，height为高，这里的长和高是字符的长和高，比如height=2,就是标签有2个字符这么高
+''' 标签 '''
+title = tk.Label(window, text='你好！this is title', bg='green', font=('Arial', 12), width=30, height=2)
+# 说明： bg为背景，font为字体，width为长，height为高，这里的是字符的长和高
+title.pack()
 
-# 放置标签
-mylabel.pack()  # Label内容content区域放置位置，自动调节尺寸
-# 放置lable的方法有：1）mylabel.pack(); 2)mylabel.place();
+''' 选择文件按钮'''
+chooseFile = tk.Button(window, text='选择文件', font=('Arial', 12), width=10, height=1, command=func_chooseFile)
+# command是按钮回调函数
+chooseFile.pack()
 
 # 主窗口循环显示
 window.mainloop()
