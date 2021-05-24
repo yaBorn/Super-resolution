@@ -55,8 +55,6 @@ def func_VideoImage(ch):
     global is_VideoImage
     is_VideoImage = ch
     if is_VideoImage:
-        print("选择图像超分 is_VideoImage:"+str(is_VideoImage))
+        print("选择图像超分 is_VideoImage:" + str(is_VideoImage))
     else:
-        print("选择视频超分 is_VideoImage:"+str(is_VideoImage))
-
-
+        print("选择视频超分 is_VideoImage:" + str(is_VideoImage))
