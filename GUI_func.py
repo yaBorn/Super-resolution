@@ -60,14 +60,18 @@ def func_VideoImage(ch, radio1, radio2):
         use_ways = 'SRCNN'  # 参数更改
         radio1.config(text='SRCNN', value='SRCNN', command=lambda: func_Ways(ch='SRCNN'))
         radio2.config(text='FSRCNN', value='FSRCNN', command=lambda: func_Ways(ch='FSRCNN'))
-        print("选择图像超分 is_VideoImage:" + str(is_VideoImage)+" use_ways:"+str(use_ways))
-    else:  # 视频
+        print("选择图像超分 is_VideoImage:" + str(is_VideoImage) + " use_ways:" + str(use_ways))
+
+    elif ch == 'video':  # 视频
         is_VideoImage = ch
         # 设定算法选项
         use_ways = 'EDVR'
         radio1.config(text='EDVR', value='EDVR', command=lambda: func_Ways(ch='EDVR'))
         radio2.config(text='    ', value='EDVR', command=lambda: func_Ways(ch='EDVR'))
-        print("选择视频超分 is_VideoImage:"+str(is_VideoImage)+" use_ways:"+str(use_ways))
+        print("选择视频超分 is_VideoImage:" + str(is_VideoImage) + " use_ways:" + str(use_ways))
+
+    else:
+        print("error：图像/视频选项 ch:" + str(ch))
 
 
 # 算法 选项
@@ -75,8 +79,23 @@ def func_Ways(ch):
     global use_ways, is_VideoImage
     use_ways = ch
     if is_VideoImage == 'image':  # 图像算法
-        print("图像超分 use_ways:"+str(use_ways))
-    else:  # 视频算法
-        print("视频超分 use_ways:"+str(use_ways))
+        print("图像超分 use_ways:" + str(use_ways))
+    elif is_VideoImage == 'video':  # 视频算法
+        print("视频超分 use_ways:" + str(use_ways))
+    else:
+        print("error：算法选项 is_VideoImage:" + str(is_VideoImage) + " use_ways:" + str(use_ways))
 
 
+# 模型 选项
+def func_chModel():
+    if is_VideoImage == 'image':  # 图像算法
+        if use_ways == 'SRCNN':
+            print("图像超分 " + str(use_ways))
+        elif use_ways == 'FSRCNN':
+            print("图像超分 " + str(use_ways))
+        else:
+            print("error：图像超分 " + str(use_ways))
+    elif is_VideoImage == 'video':  # 视频算法
+        print("视频超分 use_ways:" + str(use_ways))
+    else:
+        print("error：模型选项 is_VideoImage:" + str(is_VideoImage) + " use_ways:" + str(use_ways))

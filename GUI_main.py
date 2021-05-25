@@ -62,6 +62,8 @@ radio_vi2 = tk.Radiobutton(window, text='图像', variable=r_vi, value='image',
                            command=lambda: func_VideoImage(ch='image', radio1=radio_way, radio2=radio_way2))
 radio_vi2.pack()
 
+
+
 # 主窗口循环显示
 window.mainloop()
 # 注意，loop因为是循环的意思，window.mainloop就会让window不断的刷新
