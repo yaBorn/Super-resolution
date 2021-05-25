@@ -1,5 +1,6 @@
 import tkinter as tk  # 使用Tkinter_GUI包
 from tkinter import filedialog, END
+import os  # 使用os.system调用 matlab 打包 exe
 
 """
     程序属性配置
@@ -50,10 +51,15 @@ model_edvr = [
     "1",
 ]
 
-
 """
     用到的功能函数
 """
+
+
+# 格式化地址
+def formatLocal(local):
+    ans = local.replace('/', '\\')  # 替换字符
+    return ans
 
 
 # 根据输入文件路径 得到输出文件路径
@@ -117,6 +123,16 @@ def checkFileFormat(infile):
     return False
 
 
+# 调用exe SRCNN
+def run_SRCNN():
+    global use_model
+    # 详细了解 见 SRCNN_test/ README
+    cmd = 'SRCNN.exe ' + file_input + ' ' + file_output + ' Model\\SRCNN\\' + use_model + '.mat'
+    print('cmd：' + cmd)
+    os.system(cmd)  # 此处输出窗口乱码，File-->Settings-->Editor-->File Encodings: 全局编码改为GBK
+    return
+
+
 """
     图形界面 回调函数
 """
@@ -128,6 +144,7 @@ def func_chooseFile(entryInput, entryOutput):
     filename = tk.filedialog.askopenfilename(
         title='选择文件',
         filetypes=format_file)
+    filename = formatLocal(filename)  # 格式化路径
     if filename:
         # 分割字符串 处理文件路径
         global file_input, file_output
@@ -196,7 +213,7 @@ def func_chModel(listbox):
 
 # 开始 按钮
 def func_start():
-    print("####### 开始计算 参数如下 #######")
+    print("========== 开始计算 参数如下 ==========")
     print("     输入路径：" + str(file_input))
     print("     输出路径：" + str(file_output))
     print("     视频/图像：" + str(is_VideoImage))
@@ -209,5 +226,4 @@ def func_start():
     print("检查文件格式：正确")
 
     # 调用算法
-
-
+    run_SRCNN()

@@ -11,9 +11,13 @@ clear all;
 
 %% 相对路径测试
 % 测试成功
-input  = 'cat.jpg';
+input  = '02.jpg';
+% input  = 'cat.jpg';
 output  = 'cat_out.jpg';
 model = 'Model\SRCNN\9-1-5(ImageNet)\x3.mat';
+%% TODO 输入图片01.jpg 报错
+%       错误使用 imread>get_format_info (line 542) 无法确定文件格式。
+% 
 
 %% 绝对路径测试
 % 测试成功
