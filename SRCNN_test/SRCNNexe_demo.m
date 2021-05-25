@@ -17,10 +17,9 @@ model = 'Model\SRCNN\9-1-5(ImageNet)\x3.mat';
 
 %% 绝对路径测试
 % 测试成功
-root = 'G:\program\0-大创\软件\SRCNN_test';      % 此处添加绝对路径
+root = 'G:\program\0-大创\软件\Super-resolution\SRCNN_test';      % 此处添加绝对路径
 input  = [root, '\', input];
 output  = [root, '\', output];
 model  = [root, '\', model];
 
-SRCNN_exe(input, output, model)
-a = '完成'
+SRCNNexe(input, output, model)
