@@ -4,6 +4,16 @@ from tkinter import filedialog, END
 """
     程序属性配置
 """
+# 格式.
+format_im = ['png', 'jpeg', 'jpg', 'tiff', 'bmp']
+format_vi = ['mp4']
+format_file = [
+    ('图像/视频', '*.png;*.jpeg;*.jpg;*.tiff;*.bmp'),
+    ('图像', '*.png;*.jpeg;*.jpg;*.tiff;*.bmp'),
+    ('视频', '*.mp4'),
+    ('全部文件', '*.*'),
+]
+
 # 输入文件路径
 file_input = ''
 # 输出文件路径
@@ -85,6 +95,28 @@ def renewRadioVI(radio1, radio2, listbox):
         print("     is_VideoImage：" + str(is_VideoImage))
 
 
+# 检查 输入文件
+def checkFileFormat(infile):
+    # 检查路径
+    if file_input == "" or file_output == "":
+        print("error: 检查格式 路径为空 ")
+        return False
+
+    # 检查格式
+    informat = infile.rsplit('.', 1)[1]
+    if is_VideoImage == 'image':
+        if informat in format_im:
+            return True
+        print("error: 检查格式 格式不匹配 ")
+    elif is_VideoImage == 'video':
+        if informat in format_vi:
+            return True
+        print("error: 检查格式 格式不匹配 ")
+    else:
+        print("error：检查格式 参数错误 ch-is_VideoImage:" + str(is_VideoImage))
+    return False
+
+
 """
     图形界面 回调函数
 """
@@ -93,7 +125,9 @@ def renewRadioVI(radio1, radio2, listbox):
 # 选择文件 按钮
 def func_chooseFile(entryInput, entryOutput):
     # 打开文件选择对话框 返回选择文件路径
-    filename = tk.filedialog.askopenfilename()
+    filename = tk.filedialog.askopenfilename(
+        title='选择文件',
+        filetypes=format_file)
     if filename:
         # 分割字符串 处理文件路径
         global file_input, file_output
@@ -168,4 +202,10 @@ def func_start():
     print("     视频/图像：" + str(is_VideoImage))
     print("     算法：" + str(use_ways))
     print("     模型：" + str(use_model))
+    # 检查文件格式
+    if not checkFileFormat(file_input):
+        print("error：运行终止 检查文件未通过")
+        return False
+    print("检查文件格式：正确")
+
 
