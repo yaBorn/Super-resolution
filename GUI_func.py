@@ -39,14 +39,24 @@ model_fsrcnn = [
 #   视频超分辨率算法：
 use_model = "SRCNN_INx2"
 
+
 """
     用到的功能函数
 """
+
+
 # 根据输入文件路径 得到输出文件路径
 def getOutputFile(infile):
     # 分割input后缀(从右侧分割’.')
     outfile = infile.rsplit('.', 1)[0] + '_out.' + infile.rsplit('.', 1)[1]
     return outfile
+
+
+# 更新List组件
+def renewList(listbox, content):
+    # 往列表里添加数据
+    for item in content:
+        listbox.insert("end", item)
 
 
 """
@@ -115,18 +125,6 @@ def func_Ways(ch):
 
 
 # 模型 选项
-def func_chModel():
-    if is_VideoImage == 'image':  # 图像算法
-        if use_ways == 'SRCNN':
-            print("图像超分 " + str(use_ways))
-        elif use_ways == 'FSRCNN':
-            print("图像超分 " + str(use_ways))
-        else:
-            print("error：模型选项 图像超分 " + str(use_ways))
-    elif is_VideoImage == 'video':  # 视频算法
-        if use_ways == 'EDVR':
-            print("视频超分 " + str(use_ways))
-        else:
-            print("error：模型选项 视频超分 " + str(use_ways))
-    else:
-        print("error：模型选项 is_VideoImage:" + str(is_VideoImage) + " use_ways:" + str(use_ways))
+def func_chModel(listbox):
+    ch = listbox.get(listbox.curselection())
+    print(ch)

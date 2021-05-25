@@ -38,16 +38,11 @@ button_chooseFile = tk.Button(window, text='选择文件', font=('Arial', 11), w
 button_chooseFile.pack()
 
 ''' 模型选择'''
-# 创建List变量并为其添加内容
-l_model = tk.StringVar()
-l_model.set((1, 2, 3, 4))  # 为变量var2设置值
 # 创建list组件
-list_model = tk.Listbox(window, listvariable=l_model)
-# 值循环添加到Listbox控件中
-list_items = [11, 22, 33, 44]
-for item in list_items:
-    list_model.insert('end', item)  # 从最后一个位置开始加入值
+list_model = tk.Listbox(window)
+list_model.bind('<<ListboxSelect>>', lambda event: func_chModel(listbox=list_model))  # 列表框绑定函数 参数传递
 list_model.pack()
+renewList(list_model, model_srcnn)
 
 ''' 算法选择'''
 title_chways = tk.Label(window, text='选择算法：', font=('Arial', 11), width=30, height=2)
