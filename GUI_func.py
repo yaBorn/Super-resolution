@@ -1,11 +1,9 @@
-import Base_func as base
 import tkinter as tk  # 使用Tkinter_GUI包
 from tkinter import filedialog, END
 
 """
     程序属性配置
 """
-
 # 输入文件路径
 file_input = ''
 # 输出文件路径
@@ -16,10 +14,40 @@ is_VideoImage = 'image'  # 默认为图像超分
 
 # 超分算法
 #   图像超分辨率算法：SRCNN FSRCNN
-#   视频超分辨率算法：
+#   视频超分辨率算法：EDVR
 use_ways = 'SRCNN'
 
 # 使用训练模型
+#   图像超分辨率算法：
+#       SRCNN：
+model_srcnn = [
+    "SRCNN_91x2",
+    "SRCNN_91x3",
+    "SRCNN_91x4",
+    "SRCNN_INx2",
+    "SRCNN_INx3",
+    "SRCNN_INx4",
+]
+model_fsrcnn = [
+    "FSRCNN_x2",
+    "FSRCNN_x3",
+    "FSRCNN_x4",
+    "FSRCNN_x2-s",
+    "FSRCNN_x3-s",
+    "FSRCNN_x4-s",
+]
+#   视频超分辨率算法：
+use_model = "SRCNN_INx2"
+
+"""
+    用到的功能函数
+"""
+# 根据输入文件路径 得到输出文件路径
+def getOutputFile(infile):
+    # 分割input后缀(从右侧分割’.')
+    outfile = infile.rsplit('.', 1)[0] + '_out.' + infile.rsplit('.', 1)[1]
+    return outfile
+
 
 """
     图形界面 回调函数
@@ -34,7 +62,7 @@ def func_chooseFile(entryInput, entryOutput):
         # 分割字符串 处理文件路径
         global file_input, file_output
         file_input = filename
-        file_output = base.getOutputFile(filename)
+        file_output = getOutputFile(filename)
         print("输入文件:", file_input)
         print("预输出文件:", file_output)
 
@@ -94,8 +122,11 @@ def func_chModel():
         elif use_ways == 'FSRCNN':
             print("图像超分 " + str(use_ways))
         else:
-            print("error：图像超分 " + str(use_ways))
+            print("error：模型选项 图像超分 " + str(use_ways))
     elif is_VideoImage == 'video':  # 视频算法
-        print("视频超分 use_ways:" + str(use_ways))
+        if use_ways == 'EDVR':
+            print("视频超分 " + str(use_ways))
+        else:
+            print("error：模型选项 视频超分 " + str(use_ways))
     else:
         print("error：模型选项 is_VideoImage:" + str(is_VideoImage) + " use_ways:" + str(use_ways))
