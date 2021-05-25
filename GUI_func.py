@@ -226,4 +226,16 @@ def func_start():
     print("检查文件格式：正确")
 
     # 调用算法
-    run_SRCNN()
+    if use_ways=='SRCNN':
+        print("run：图像_SRCNN")
+        run_SRCNN()
+    elif use_ways=='FSRCNN':
+        print("run：图像_FSRCNN")
+        #run_FSRCNN()
+    elif use_ways=='EDVR':
+        print("run：视频_EDVR")
+        #run_EDVR()
+    else:
+        print("error：运行终止 参数错误 use_ways:"+str(use_ways))
+        return False
+
