@@ -19,7 +19,7 @@ use_ways = 'SRCNN'
 
 # 使用训练模型
 use_model = "SRCNN_INx2"
-#   图像超分辨率算法：
+# 模型
 model_srcnn = [
     "SRCNN_91x2",
     "SRCNN_91x3",
@@ -39,7 +39,6 @@ model_fsrcnn = [
 model_edvr = [
     "1",
 ]
-#   视频超分辨率算法：
 
 
 """
@@ -154,4 +153,15 @@ def func_Ways(ch, listbox):
 def func_chModel(listbox):
     global use_model
     use_model = listbox.get(listbox.curselection())
-    print("模型选择 use_model:" + str(use_model))
+    # print("模型选择 use_model:" + str(use_model))
+
+
+# 开始 按钮
+def func_start():
+    print("####### 开始计算 参数如下 #######")
+    print("     输入路径：" + str(file_input))
+    print("     输出路径：" + str(file_output))
+    print("     视频/图像：" + str(is_VideoImage))
+    print("     算法：" + str(use_ways))
+    print("     模型：" + str(use_model))
+
