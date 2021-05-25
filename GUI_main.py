@@ -1,86 +1,100 @@
 """
     图形界面
 """
+import tkinter as tk  # 使用Tkinter_GUI包
 from tkinter import StringVar
-from GUI_func import *  # 按键回调函数
+import GUI_func as gui
 
+
+""" 窗口初始化 """
 window = tk.Tk()  # 实例化object，建立窗口window
-window.title('Super-resolution')  # 窗口名
-window.geometry('800x800')  # 设定窗口的大小(长x宽)
+window.title('Super-resolution 超分辨率工具箱 v1.0_demo')  # 窗口名
+window.geometry('740x690')  # 设定窗口的大小(长x宽)
+window.resizable(0, 0)  # 设置窗口大小不可变
+myfront = ['Consolas', 11]  # 字体参数
 
-""" 标签 """
-title = tk.Label(window, text='你好！this is title', bg='green', font=('Arial', 12), width=30, height=2)
-# 说明： bg为背景，font为字体，width为长，height为高，这里的是字符的长和高
-title.pack()
+""" 框架组件 用于布局"""
+# 父组件 边框像素(1凹陷感，2框线感)->简写bd 边线风格 垂直边距 高 宽
+f1 = tk.Frame(window, borderwidth=2, relief="groove", height=100, width=700)
+f2 = tk.Frame(window, borderwidth=2, relief="groove", height=110, width=700)
+f3 = tk.Frame(window, borderwidth=2, relief="groove", height=400, width=700)
+# grid布局 所在行 所在列 (跨越行数) 水平边距 垂直边距
+f1.grid(row=0, column=0, padx=20, pady=20)  # 700+20+20=740 边框长+边距*2=窗口长 因此边框居中
+f2.grid(row=1, column=0, padx=20, pady=0)
+f3.grid(row=2, column=0, padx=20, pady=20)
+# 固定组件大小,防止子组件大小影响
+f1.grid_propagate(0)
+f2.grid_propagate(0)
+f3.grid_propagate(0)
 
+
+""" 标签 输入输出"""
+title_output = tk.Label(f1, text='输出路径：', font=myfront, width=0, height=0)
+title_input = tk.Label(f1, text='输入路径：', font=myfront, width=0, height=0)
+# font为字体 width为长 height为高 这里的是字符的长和高(字符间距)
 """ 输入路径 """
-title_input = tk.Label(window, text='输入路径：', font=('Arial', 11), width=30, height=2)
-title_input.pack(anchor="w")
-text_input = tk.Entry(window, show=None, state='normal')  # 无密文 可写
+text_input = tk.Entry(f1, width=65, bd=2, show=None, state='normal')  # 无密文 可写
 text_input.insert(0, "未选择...")  # 写入文本
 text_input.config(state='readonly')  # 写入后设为只读
-text_input.pack()
-
 """ 输出路径 """
-title_output = tk.Label(window, text='输出路径：', font=('Arial', 11), width=30, height=2)
-title_output.pack(anchor="w")
-text_output = tk.Entry(window, show=None, state='normal')  # 无密文 可写
-text_output.insert(0, "未选择...")  # 写入文本
-text_output.config(state='readonly')  # 写入后设为只读
-text_output.pack()
-
-""" 选择文件 按钮 """
-button_chooseFile = tk.Button(window, text='选择文件', font=('Arial', 11), width=10, height=1,
-                              command=lambda: func_chooseFile(entryInput=text_input, entryOutput=text_output))
-# command是按钮回调函数 lambda: 传递参数
-button_chooseFile.pack()
-
-""" 模型 单选组件 """
-# 创建list组件
-list_model = tk.Listbox(window)
-list_model.bind('<<ListboxSelect>>', lambda event: func_chModel(listbox=list_model))  # 列表框绑定函数 参数传递
-list_model.pack()
-renewList(list_model, model_srcnn)
+text_output = tk.Entry(f1, width=65, bd=2, show=None, state='normal')
+text_output.insert(0, "未选择...")
+text_output.config(state='readonly')
+""" 按钮 选择文件 """
+button_chooseFile = tk.Button(f1, text='选择文件', font=myfront, width=10, height=1, bd=4,
+                              command=lambda: gui.func_chooseFile(entryInput=text_input, entryOutput=text_output))
+# command是按钮回调函数 lambda:传递参数
+""" 按钮 开始 """
+button_start = tk.Button(f1, text='开始', font=myfront, width=10, height=1, bd=4,
+                         command=lambda: gui.func_start())
+""" 布局 """
+title_input.grid(row=0, column=0, padx=10, pady=15)
+title_output.grid(row=1, column=0, padx=10, pady=0)
+text_input.grid(row=0, column=1, padx=0, pady=0)
+text_output.grid(row=1, column=1, padx=0, pady=0)
+button_chooseFile.grid(row=0, column=2, padx=15, pady=0)
+button_start.grid(row=1, column=2, padx=15, pady=0)
 
 
-""" 算法 单选组件 """
-title_chways = tk.Label(window, text='选择算法：', font=('Arial', 11), width=30, height=2)
-title_chways.pack()
-r_way = StringVar()  # py中变量的值相同，即便变量名不同，他们对应的id内存地址是一样的 因此两组选择控件会冲突，不建议用int型
+""" 标签 参数选择"""
+title_chvi = tk.Label(f2, text='视频/图像：', font=myfront, width=0, height=0)
+title_chways = tk.Label(f2, text='选择算法：', font=myfront, width=0, height=0)
+title_model = tk.Label(f2, text='训练模型：', font=myfront, width=0, height=0)
+""" 列表 模型选择 """
+list_model = tk.Listbox(f2, height=5)  # 创建list组件 height指定显示行数
+list_model.bind('<<ListboxSelect>>', lambda event: gui.func_chModel(listbox=list_model))  # 列表框绑定函数 参数传递
+gui.renewList(list_model, gui.model_srcnn)  # 更新list
+""" 单选 算法选择 """
+# 创建n个radiobutton 其中variable=var
+# value='A'：当选中其中一个选项 将value赋值到variable的参数 variable的参数变量控制绘制的显示状态
+r_way = StringVar()  # py变量值相同 变量名不同 他们的id内存地址也是一样的 因此两组选择控件会冲突 不建议参数变量直接用int型 而是StringVar
 r_way.set('SRCNN')
-radio_way2 = tk.Radiobutton(window, text='FSRCNN', variable=r_way, value='FSRCNN',
-                            command=lambda: func_Ways(ch='FSRCNN', listbox=list_model))
-radio_way2.pack()
-radio_way = tk.Radiobutton(window, text='SRCNN', variable=r_way, value='SRCNN',
-                           command=lambda: func_Ways(ch='SRCNN', listbox=list_model))
-radio_way.pack()
-
-""" 视频/图像超分 单选列表组件 """
-# 创建n个radiobutton选项
-# 其中variable=var,
-# value='A'的意思就是，当鼠标选中了其中一个选项，把value赋值variable的参数
-title_chvi = tk.Label(window, text='视频/图像超分：', font=('Arial', 11), width=30, height=2)
-title_chvi.pack()
+radio_way = tk.Radiobutton(f2, text='SRCNN', variable=r_way, value='SRCNN',
+                           command=lambda: gui.func_Ways(ch='SRCNN', listbox=list_model))
+radio_way2 = tk.Radiobutton(f2, text='FSRCNN', variable=r_way, value='FSRCNN',
+                            command=lambda: gui.func_Ways(ch='FSRCNN', listbox=list_model))
+""" 单选 视频/图像 """
 r_vi = StringVar()
 r_vi.set('image')
-radio_vi = tk.Radiobutton(window, text='视频', variable=r_vi, value='video',
-                          command=lambda: func_VideoImage(
+radio_vi = tk.Radiobutton(f2, text='视频', variable=r_vi, value='video',
+                          command=lambda: gui.func_VideoImage(
                               ch='video', radio1=radio_way, radio2=radio_way2, listbox=list_model, r_way=r_way))
-radio_vi.pack()
-radio_vi2 = tk.Radiobutton(window, text='图像', variable=r_vi, value='image',
-                           command=lambda: func_VideoImage(
+radio_vi2 = tk.Radiobutton(f2, text='图像', variable=r_vi, value='image',
+                           command=lambda: gui.func_VideoImage(
                                ch='image', radio1=radio_way, radio2=radio_way2, listbox=list_model, r_way=r_way))
-radio_vi2.pack()
+""" 布局 """
+title_chvi.grid(row=0, column=0, padx=40, pady=10)
+radio_vi.grid(row=2, column=0, padx=0, pady=0)
+radio_vi2.grid(row=1, column=0, padx=0, pady=0)
+title_chways.grid(row=0, column=1, padx=70, pady=0)
+radio_way.grid(row=1, column=1, padx=0, pady=0)
+radio_way2.grid(row=2, column=1, padx=0, pady=0)
+title_model.grid(row=0, column=2, padx=20, pady=0)
+list_model.grid(row=0, rowspan=3, column=3, padx=0, pady=4)
 
-""" 开始 按钮 """
-button_start = tk.Button(window, text='开始', font=('Arial', 11), width=10, height=1,
-                         command=lambda: func_start())
-# command是按钮回调函数 lambda: 传递参数
-button_start.pack()
 
-# 主窗口循环显示
+""" 主窗口循环显示 """
 window.mainloop()
-# 注意，loop因为是循环的意思，window.mainloop就会让window不断的刷新
-# 如果没有mainloop,就是一个静态的window,传入进去的值就不会有循环，
-# mainloop就相当于一个很大的while循环，有个while，每点击一次就会更新一次，所以我们必须要有循环
-# 所有的窗口文件都必须有类似的mainloop函数，mainloop是窗口文件的关键的关键。
+# 没有mainloop 则是静态window 传入值不会有循环
+# window.mainloop会让window不断刷新
+# mainloop相当很大的while循环 点击一次更新一次

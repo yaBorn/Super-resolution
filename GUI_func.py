@@ -1,9 +1,12 @@
+"""
+    程序参数 功能函数 回调函数
+"""
 import tkinter as tk  # 使用Tkinter_GUI包
 from tkinter import filedialog, END
 import os  # 使用os.system调用 matlab 打包 exe
 
 """
-    程序属性配置
+    程序参数配置
 """
 # 格式.
 format_im = ['png', 'jpeg', 'jpg', 'tiff', 'bmp']
@@ -226,16 +229,15 @@ def func_start():
     print("检查文件格式：正确")
 
     # 调用算法
-    if use_ways=='SRCNN':
+    if use_ways == 'SRCNN':
         print("run：图像_SRCNN")
         run_SRCNN()
-    elif use_ways=='FSRCNN':
+    elif use_ways == 'FSRCNN':
         print("run：图像_FSRCNN")
-        #run_FSRCNN()
-    elif use_ways=='EDVR':
+        # run_FSRCNN()
+    elif use_ways == 'EDVR':
         print("run：视频_EDVR")
-        #run_EDVR()
+        # run_EDVR()
     else:
         print("error：运行终止 参数错误 use_ways:"+str(use_ways))
         return False
-
