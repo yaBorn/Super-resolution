@@ -12,11 +12,12 @@ file_input = ''
 file_output = ''
 
 # 视频/图像 超分
-is_VideoImage = 1  # 1为图像超分
+is_VideoImage = 'image'  # 默认为图像超分
 
 # 超分算法
-#   图像超分辨率算法：
+#   图像超分辨率算法：SRCNN FSRCNN
 #   视频超分辨率算法：
+use_ways = 'SRCNN'
 
 # 使用训练模型
 
@@ -51,12 +52,31 @@ def func_chooseFile(entryInput, entryOutput):
 
 
 # 图像/视频 选项
-def func_VideoImage(ch):
-    global is_VideoImage
-    is_VideoImage = ch
-    if is_VideoImage:
-        print("选择图像超分 is_VideoImage:"+str(is_VideoImage))
-    else:
-        print("选择视频超分 is_VideoImage:"+str(is_VideoImage))
+def func_VideoImage(ch, radio1, radio2):
+    global use_ways, is_VideoImage
+    if ch == 'image':  # 图像
+        is_VideoImage = ch
+        # 设定算法选项
+        use_ways = 'SRCNN'  # 参数更改
+        radio1.config(text='SRCNN', value='SRCNN', command=lambda: func_Ways(ch='SRCNN'))
+        radio2.config(text='FSRCNN', value='FSRCNN', command=lambda: func_Ways(ch='FSRCNN'))
+        print("选择图像超分 is_VideoImage:" + str(is_VideoImage)+" use_ways:"+str(use_ways))
+    else:  # 视频
+        is_VideoImage = ch
+        # 设定算法选项
+        use_ways = 'EDVR'
+        radio1.config(text='EDVR', value='EDVR', command=lambda: func_Ways(ch='EDVR'))
+        radio2.config(text='    ', value='EDVR', command=lambda: func_Ways(ch='EDVR'))
+        print("选择视频超分 is_VideoImage:"+str(is_VideoImage)+" use_ways:"+str(use_ways))
+
+
+# 算法 选项
+def func_Ways(ch):
+    global use_ways, is_VideoImage
+    use_ways = ch
+    if is_VideoImage == 'image':  # 图像算法
+        print("图像超分 use_ways:"+str(use_ways))
+    else:  # 视频算法
+        print("视频超分 use_ways:"+str(use_ways))
 
 

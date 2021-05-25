@@ -20,7 +20,7 @@ text_input = tk.Entry(window, show=None, state='normal')  # 无密文 可写
 text_input.insert(0, "未选择...")  # 写入文本
 text_input.config(state='readonly')  # 写入后设为只读
 text_input.pack()
-text_input.place(relx=0.1, rely=0.25, relwidth=0.8)
+# text_input.place(relx=0.1, rely=0.25, relwidth=0.8)
 
 ''' 输出路径'''
 title_output = tk.Label(window, text='输出路径：', font=('Arial', 11), width=30, height=2)
@@ -29,8 +29,7 @@ text_output = tk.Entry(window, show=None, state='normal')  # 无密文 可写
 text_output.insert(0, "未选择...")  # 写入文本
 text_output.config(state='readonly')  # 写入后设为只读
 text_output.pack()
-text_output.place(relx=0.1, rely=0.4, relwidth=0.8)
-
+# text_output.place(relx=0.1, rely=0.4, relwidth=0.8)
 
 ''' 选择文件按钮'''
 button_chooseFile = tk.Button(window, text='选择文件', font=('Arial', 11), width=10, height=1,
@@ -38,19 +37,30 @@ button_chooseFile = tk.Button(window, text='选择文件', font=('Arial', 11), w
 # command是按钮回调函数 lambda: 传递参数
 button_chooseFile.pack()
 
+''' 算法选择'''
+title_chways = tk.Label(window, text='选择算法：', font=('Arial', 11), width=30, height=2)
+title_chways.pack()
+r_way = 'SRCNN'  # py中变量的值相同，即便变量名不同，他们对应的id内存地址是一样的 因此两组选择控件会冲突，不建议用int型
+radio_way = tk.Radiobutton(window, text='SRCNN', variable=r_way, value='SRCNN',
+                           command=lambda: func_Ways(ch='SRCNN'))
+radio_way.pack()
+radio_way2 = tk.Radiobutton(window, text='FSRCNN', variable=r_way, value='FSRCNN',
+                            command=lambda: func_Ways(ch='FSRCNN'))
+radio_way2.pack()
 
 ''' 视频/图像超分 单选'''
 # 创建n个radiobutton选项
 # 其中variable=var,
 # value='A'的意思就是，当鼠标选中了其中一个选项，把value赋值variable的参数
-r_vi = 1
-radio_vi = tk.Radiobutton(window, text='视频', variable=r_vi, value=0,
-                          command=lambda: func_VideoImage(ch=0))
-radio_vi.pack(anchor="w")
-radio_vi2 = tk.Radiobutton(window, text='图像', variable=r_vi, value=1,
-                           command=lambda: func_VideoImage(ch=1))
-radio_vi2.pack(anchor="w")
-
+title_chvi = tk.Label(window, text='视频/图像超分：', font=('Arial', 11), width=30, height=2)
+title_chvi.pack()
+r_vi = 'image'
+radio_vi = tk.Radiobutton(window, text='视频', variable=r_vi, value='video',
+                          command=lambda: func_VideoImage(ch='video', radio1=radio_way, radio2=radio_way2))
+radio_vi.pack()
+radio_vi2 = tk.Radiobutton(window, text='图像', variable=r_vi, value='image',
+                           command=lambda: func_VideoImage(ch='image', radio1=radio_way, radio2=radio_way2))
+radio_vi2.pack()
 
 # 主窗口循环显示
 window.mainloop()
