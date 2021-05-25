@@ -109,22 +109,24 @@ def func_chooseFile(entryInput, entryOutput):
         entryOutput.insert(0, file_output)
         entryOutput.config(state='readonly')
     else:
-        print("未找到该文件")
+        print("error：选择文件 未找到该文件")
 
 
 # 图像/视频 选项
-def func_VideoImage(ch, radio1, radio2, listbox):
+def func_VideoImage(ch, radio1, radio2, listbox, r_way):
     global use_ways, is_VideoImage
     if ch == 'image':  # 图像
         # 参数更改
         is_VideoImage = ch  # 视频/图像参数
         use_ways = 'SRCNN'  # 算法参数
+        r_way.set('SRCNN')  # 算法组件选中参数
         # 组件更新
         renewRadioVI(radio1, radio2, listbox)  # 更新 算法选项
         renewList(listbox, model_srcnn)  # 更新 模型列表
     elif ch == 'video':  # 视频
         is_VideoImage = ch
         use_ways = 'EDVR'
+        r_way.set('EDVR')
         renewRadioVI(radio1, radio2, listbox)
         renewList(listbox, model_edvr)
     else:

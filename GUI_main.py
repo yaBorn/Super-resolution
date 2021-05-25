@@ -1,6 +1,7 @@
 """
     图形界面
 """
+from tkinter import StringVar
 
 from GUI_func import *  # 按键回调函数
 
@@ -38,17 +39,18 @@ button_chooseFile = tk.Button(window, text='选择文件', font=('Arial', 11), w
 # command是按钮回调函数 lambda: 传递参数
 button_chooseFile.pack()
 
-""" 模型选择 """
+""" 模型 单选 """
 # 创建list组件
 list_model = tk.Listbox(window)
 list_model.bind('<<ListboxSelect>>', lambda event: func_chModel(listbox=list_model))  # 列表框绑定函数 参数传递
 list_model.pack()
 renewList(list_model, model_srcnn)
 
-""" 算法选择 """
+""" 算法 单选 """
 title_chways = tk.Label(window, text='选择算法：', font=('Arial', 11), width=30, height=2)
 title_chways.pack()
-r_way = 'SRCNN'  # py中变量的值相同，即便变量名不同，他们对应的id内存地址是一样的 因此两组选择控件会冲突，不建议用int型
+r_way = StringVar()  # py中变量的值相同，即便变量名不同，他们对应的id内存地址是一样的 因此两组选择控件会冲突，不建议用int型
+r_way.set('SRCNN')
 radio_way2 = tk.Radiobutton(window, text='FSRCNN', variable=r_way, value='FSRCNN',
                             command=lambda: func_Ways(ch='FSRCNN', listbox=list_model))
 radio_way2.pack()
@@ -62,14 +64,15 @@ radio_way.pack()
 # value='A'的意思就是，当鼠标选中了其中一个选项，把value赋值variable的参数
 title_chvi = tk.Label(window, text='视频/图像超分：', font=('Arial', 11), width=30, height=2)
 title_chvi.pack()
-r_vi = 'image'
+r_vi = StringVar()
+r_vi.set('image')
 radio_vi = tk.Radiobutton(window, text='视频', variable=r_vi, value='video',
                           command=lambda: func_VideoImage(
-                              ch='video', radio1=radio_way, radio2=radio_way2, listbox=list_model))
+                              ch='video', radio1=radio_way, radio2=radio_way2, listbox=list_model, r_way=r_way))
 radio_vi.pack()
 radio_vi2 = tk.Radiobutton(window, text='图像', variable=r_vi, value='image',
                            command=lambda: func_VideoImage(
-                               ch='image', radio1=radio_way, radio2=radio_way2, listbox=list_model))
+                               ch='image', radio1=radio_way, radio2=radio_way2, listbox=list_model, r_way=r_way))
 radio_vi2.pack()
 
 # 主窗口循环显示
