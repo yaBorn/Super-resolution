@@ -18,8 +18,8 @@ is_VideoImage = 'image'  # 默认为图像超分
 use_ways = 'SRCNN'
 
 # 使用训练模型
+use_model = "SRCNN_INx2"
 #   图像超分辨率算法：
-#       SRCNN：
 model_srcnn = [
     "SRCNN_91x2",
     "SRCNN_91x3",
@@ -36,8 +36,10 @@ model_fsrcnn = [
     "FSRCNN_x3-s",
     "FSRCNN_x4-s",
 ]
+model_edvr = [
+    "1",
+]
 #   视频超分辨率算法：
-use_model = "SRCNN_INx2"
 
 
 """
@@ -52,11 +54,32 @@ def getOutputFile(infile):
     return outfile
 
 
-# 更新List组件
+# 更新 List组件
 def renewList(listbox, content):
+    """ 将 listbox 更新为 content"""
+    # 清空列表
+    listbox.delete(0, END)
     # 往列表里添加数据
     for item in content:
         listbox.insert("end", item)
+
+
+# 更新 算法选项组件
+def renewRadioVI(radio1, radio2, listbox):
+    """ 根据 程序属性配置 更新 算法选项组件"""
+    global is_VideoImage
+    if is_VideoImage == 'image':  # 图像
+        # 更新 算法选项
+        radio1.config(text='SRCNN', value='SRCNN', command=lambda: func_Ways(ch='SRCNN', listbox=listbox))
+        radio2.config(text='FSRCNN', value='FSRCNN', command=lambda: func_Ways(ch='FSRCNN', listbox=listbox))
+
+    elif is_VideoImage == 'video':  # 视频
+        radio1.config(text='EDVR', value='EDVR', command=lambda: func_Ways(ch='EDVR', listbox=listbox))
+        radio2.config(text='    ', value='EDVR', command=lambda: func_Ways(ch='EDVR', listbox=listbox))
+
+    else:
+        print("error：更新 算法选项 失败")
+        print("     is_VideoImage：" + str(is_VideoImage))
 
 
 """
@@ -90,41 +113,43 @@ def func_chooseFile(entryInput, entryOutput):
 
 
 # 图像/视频 选项
-def func_VideoImage(ch, radio1, radio2):
+def func_VideoImage(ch, radio1, radio2, listbox):
     global use_ways, is_VideoImage
     if ch == 'image':  # 图像
-        is_VideoImage = ch
-        # 设定算法选项
-        use_ways = 'SRCNN'  # 参数更改
-        radio1.config(text='SRCNN', value='SRCNN', command=lambda: func_Ways(ch='SRCNN'))
-        radio2.config(text='FSRCNN', value='FSRCNN', command=lambda: func_Ways(ch='FSRCNN'))
-        print("选择图像超分 is_VideoImage:" + str(is_VideoImage) + " use_ways:" + str(use_ways))
-
+        # 参数更改
+        is_VideoImage = ch  # 视频/图像参数
+        use_ways = 'SRCNN'  # 算法参数
+        # 组件更新
+        renewRadioVI(radio1, radio2, listbox)  # 更新 算法选项
+        renewList(listbox, model_srcnn)  # 更新 模型列表
     elif ch == 'video':  # 视频
         is_VideoImage = ch
-        # 设定算法选项
         use_ways = 'EDVR'
-        radio1.config(text='EDVR', value='EDVR', command=lambda: func_Ways(ch='EDVR'))
-        radio2.config(text='    ', value='EDVR', command=lambda: func_Ways(ch='EDVR'))
-        print("选择视频超分 is_VideoImage:" + str(is_VideoImage) + " use_ways:" + str(use_ways))
-
+        renewRadioVI(radio1, radio2, listbox)
+        renewList(listbox, model_edvr)
     else:
-        print("error：图像/视频选项 ch:" + str(ch))
+        print("error：图像/视频选项 ch-is_VideoImage:" + str(ch))
 
 
 # 算法 选项
-def func_Ways(ch):
+def func_Ways(ch, listbox):
     global use_ways, is_VideoImage
-    use_ways = ch
-    if is_VideoImage == 'image':  # 图像算法
-        print("图像超分 use_ways:" + str(use_ways))
-    elif is_VideoImage == 'video':  # 视频算法
-        print("视频超分 use_ways:" + str(use_ways))
+    # 模型选项组件 更新
+    if ch == 'SRCNN':
+        use_ways = ch  # 算法参数 更改
+        renewList(listbox, model_srcnn)  # 更新列表组件
+    elif ch == 'FSRCNN':
+        use_ways = ch
+        renewList(listbox, model_fsrcnn)
+    elif ch == 'EDVR':
+        use_ways = ch
+        renewList(listbox, model_edvr)
     else:
-        print("error：算法选项 is_VideoImage:" + str(is_VideoImage) + " use_ways:" + str(use_ways))
+        print("error：算法选项 ch-use_ways:" + str(ch))
 
 
 # 模型 选项
 def func_chModel(listbox):
-    ch = listbox.get(listbox.curselection())
-    print(ch)
+    global use_model
+    use_model = listbox.get(listbox.curselection())
+    print("模型选择 use_model:" + str(use_model))
