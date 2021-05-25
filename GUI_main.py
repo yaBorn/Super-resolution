@@ -42,6 +42,7 @@ list_model.bind('<<ListboxSelect>>', lambda event: func_chModel(listbox=list_mod
 list_model.pack()
 renewList(list_model, model_srcnn)
 
+
 """ 算法 单选组件 """
 title_chways = tk.Label(window, text='选择算法：', font=('Arial', 11), width=30, height=2)
 title_chways.pack()

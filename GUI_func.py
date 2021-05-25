@@ -56,11 +56,15 @@ def getOutputFile(infile):
 # 更新 List组件
 def renewList(listbox, content):
     """ 将 listbox 更新为 content"""
+    global use_model
     # 清空列表
     listbox.delete(0, END)
     # 往列表里添加数据
     for item in content:
         listbox.insert("end", item)
+    # 模型参数 更新为list组件首选项
+    use_model = listbox.get(0)
+    listbox.selection_set(0)  # 首选项选中
 
 
 # 更新 算法选项组件
@@ -152,7 +156,7 @@ def func_Ways(ch, listbox):
 # 模型 选项
 def func_chModel(listbox):
     global use_model
-    use_model = listbox.get(listbox.curselection())
+    use_model = listbox.get(listbox.curselection())  # 模型参数 更新为list组件被选中的选项
     # print("模型选择 use_model:" + str(use_model))
 
 
