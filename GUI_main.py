@@ -61,9 +61,12 @@ title_chvi = tk.Label(f2, text='视频/图像：', font=myfront, width=0, height
 title_chways = tk.Label(f2, text='选择算法：', font=myfront, width=0, height=0)
 title_model = tk.Label(f2, text='训练模型：', font=myfront, width=0, height=0)
 """ 列表 模型选择 """
-list_model = tk.Listbox(f2, height=5)  # 创建list组件 height指定显示行数
+fl = tk.Frame(f2, borderwidth=2, relief="groove", height=100, width=160)  # 滚动条和显示框 组合框 用于布局
+scroll_model = tk.Scrollbar(fl, orient='vertical')  # 用于list的垂直滚动条
+list_model = tk.Listbox(fl, height=5, yscrollcommand=scroll_model.set)  # 创建list组件 height指定显示行数 yscrollcommand设置滚动条
 list_model.bind('<<ListboxSelect>>', lambda event: gui.func_chModel(listbox=list_model))  # 列表框绑定函数 参数传递
 gui.renewList(list_model, gui.model_srcnn)  # 更新list
+scroll_model.config(command=list_model.yview)  # 操作滚动条 调用list显示
 """ 单选 算法选择 """
 # 创建n个radiobutton 其中variable=var
 # value='A'：当选中其中一个选项 将value赋值到variable的参数 variable的参数变量控制绘制的显示状态
@@ -86,11 +89,18 @@ radio_vi2 = tk.Radiobutton(f2, text='图像', variable=r_vi, value='image',
 title_chvi.grid(row=0, column=0, padx=40, pady=10)
 radio_vi.grid(row=2, column=0, padx=0, pady=0)
 radio_vi2.grid(row=1, column=0, padx=0, pady=0)
-title_chways.grid(row=0, column=1, padx=70, pady=0)
+title_chways.grid(row=0, column=1, padx=80, pady=0)
 radio_way.grid(row=1, column=1, padx=0, pady=0)
 radio_way2.grid(row=2, column=1, padx=0, pady=0)
-title_model.grid(row=0, column=2, padx=20, pady=0)
-list_model.grid(row=0, rowspan=3, column=3, padx=0, pady=4)
+title_model.grid(row=0, column=2, padx=0, pady=0)
+fl.grid(row=0, rowspan=3, column=3, padx=0, pady=4)
+fl.grid_propagate(0)
+list_model.pack(side="left", fill="y")
+scroll_model.pack(side="right", fill="both")
+
+#
+# list_model.grid(row=0, rowspan=3, column=3, padx=0, pady=4)
+# scroll_model.grid(row=0, rowspan=3, column=4, padx=0, pady=4)
 
 
 """ 主窗口循环显示 """
