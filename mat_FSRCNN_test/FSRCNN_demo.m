@@ -4,6 +4,26 @@
 %       分辨率不变，清晰化
 %       将图片缩小1/N
 %       用bicubic 和 SRCNN放大N倍比较
+% 
+% 比SRCNN更快速 加速之前的SRCNN模型
+% 重新设计SRCNN结构
+%       1. 使用了一个解卷积层 从没有差值的低分辨率图像直接映射到高分辨率图像
+%       2. 重新改变输入特征维数
+%       3. 使用更小的卷积核与更多的映射层
+% 
+%
+% 性能分析:
+%         1. SRCNN 将低分辨率图像送进网络前，先用双三次插值法上采样操作，
+%             产生与groundtruth大小一致的低分辨率图像，增加了计算复杂度，
+%             因为先插值再输入网络计算，各个卷积层的计算代价会增， 从而限制速度。
+%         2. 非线性映射层的计算代价太高。(第二层卷积，控制台信息发现时间多用在第二层)
+% FSRCNN性能改进：
+%         1. 使用了反卷积层，当没有添加到网络最前端，来对低分图像上采样。
+%             相反的，将反卷积层放在网络最末端，生成最终的超分辨图像。
+%         2. 反卷积理解：类比为卷积层逆过程。经过卷积层，图像的尺寸会缩小；反卷积则将图像进行放大。
+%             而反卷积层和卷积层一样由很多核组成（分别是反卷积核和卷积核）。
+%         3. FSRCNN将SRCNN的单映射层分解为了多个3*3固定核大小的映射层，
+%             并在其前后分别添加了一个缩放层shrinking和扩张层expanding，以此将映射限制在低维空间。
 % ==========================
 close all;
 clear all;
@@ -15,6 +35,7 @@ im  = imread(name);
 %% 参数设置
 up_scale = 3; % 格式化像为us的倍数 ground truth要缩小1/n得到低分辨率图像
 model = 'Model\FSRCNN\FSRCNN\x3.mat';
+model = 'Model\FSRCNN\FSRCNN-s\x3.mat'; % 轻量级网络模型 -实时
 
 %% 只计算亮度分量 Y通道
 if size(im,3) > 1
@@ -41,8 +62,8 @@ psnr_fsrcnn = compute_psnr(im_original,im_highFsrcnn);
 % imwrite(im_fsrcnn, [imname '_FSRCNN.bmp']);
 
 fprintf('PSNR for Bicubic: %f dB\n', psnr_bic);
-fprintf('PSNR for FSRCNN: %f dB\n', im_highFsrcnn);
+fprintf('PSNR for FSRCNN: %f dB\n', psnr_fsrcnn);
 
 figure, imshow(im_original); title('Ground Truth');
 figure, imshow(im_highBic); title('Bicubic Interpolation');
-figure, imshow(im_highFsrcnn); title('SRCNN Reconstruction');
+figure, imshow(im_highFsrcnn); title('FSRCNN Reconstruction');
