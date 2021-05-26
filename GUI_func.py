@@ -137,7 +137,7 @@ def run_SRCNN():
     file = os.popen(cmd)  # cmd执行mat脚本
     info = file.read()  # 读文件
     print(info)
-    file.close
+    file.close()
     return
 
 
