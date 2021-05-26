@@ -3,7 +3,8 @@
 """
 import tkinter as tk  # 使用Tkinter_GUI包
 from tkinter import filedialog, END
-import os  # 使用os.system调用 matlab 打包 exe
+import tkinter_stdout as mystd
+
 
 """
     程序参数配置
@@ -132,12 +133,7 @@ def run_SRCNN():
     # 详细了解 见 SRCNN_test/ README
     cmd = 'SRCNN.exe ' + file_input + ' ' + file_output + ' Model\\SRCNN\\' + use_model + '.mat'
     print('cmd：' + cmd)
-    # system/popen 详见 tk_stdout说明
-    # os.system(cmd)  # 此处输出窗口乱码，File-->Settings-->Editor-->File Encodings: 全局编码改为GBK
-    file = os.popen(cmd)  # cmd执行mat脚本
-    info = file.read()  # 读文件
-    print(info)
-    file.close()
+    mystd.myPopenTime(cmd)  # 运行cmd
     return
 
 

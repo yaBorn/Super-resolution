@@ -1,4 +1,5 @@
 % ==========================
+% Super-Resolution Convolutional Neural Networks (FSRCNN)
 % SRCNN 测试
 %       分辨率不变，清晰化
 %       将图片缩小1/N
@@ -8,7 +9,8 @@ close all;
 clear all;
 
 %% 读取 ground truth
-im  = imread('cat.jpg');
+name = 'cat.jpg';
+im  = imread(name);
 
 %% 参数设置
 up_scale = 3; % 格式化像为us的倍数 ground truth要缩小1/n得到低分辨率图像
@@ -30,9 +32,9 @@ end
 % 变成up_scale倍像素 缩小ground truth直1/n
 im_original = modcrop(im, up_scale);
 im_original = single(im_original)/255; % 归一化
+im_low = imresize(im_original, 1/up_scale, 'bicubic'); % 低分辨率图像
 
 %% bicubic插值
-im_low = imresize(im_original, 1/up_scale, 'bicubic'); % 低分辨率图像
 im_highBic = imresize(im_low, up_scale, 'bicubic'); % bicubicu放大图像
 
 %% SRCNN
