@@ -35,11 +35,12 @@ title_output = tk.Label(f1, text='输出路径：', font=myfront, width=0, heigh
 title_input = tk.Label(f1, text='输入路径：', font=myfront, width=0, height=0)
 # font为字体 width为长 height为高 这里的是字符的长和高(字符间距)
 """ 输入路径 """
-text_input = tk.Entry(f1, width=65, bd=2, show=None, state='normal')  # 无密文 可写
+text_input = tk.Entry(f1, width=65, bd=2, show=None, state='normal', exportselection=False)  # 无密文 可写
+# 此处双击文本 与list选择模型(line:70)事件冲突 双击后list失去选择报错 指定ex=f后解决(选中文本不可复制到剪贴板)
 text_input.insert(0, "未选择...")  # 写入文本
 text_input.config(state='readonly')  # 写入后设为只读
 """ 输出路径 """
-text_output = tk.Entry(f1, width=65, bd=2, show=None, state='normal')
+text_output = tk.Entry(f1, width=65, bd=2, show=None, state='normal', exportselection=False)
 text_output.insert(0, "未选择...")
 text_output.config(state='readonly')
 """ 按钮 选择文件 """
