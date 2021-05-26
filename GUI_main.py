@@ -4,7 +4,7 @@
 import tkinter as tk  # 使用Tkinter_GUI包
 from tkinter import StringVar
 import GUI_func as gui
-
+from tkinter_stdout import myStdout
 
 """ 窗口初始化 """
 window = tk.Tk()  # 实例化object，建立窗口window
@@ -117,9 +117,12 @@ fm2.pack_propagate(0)  # 固定pack布局大小
 text_inform.pack(side="left", fill="both")  # 信息/滚动条在 fm2 的pack布局
 scroll_inform.pack(side="right", fill="both")
 
+""" 重定向标准输出"""
+mystd = myStdout(text_inform)  # 实例化重定向类
 
 """ 主窗口循环显示 """
 window.mainloop()
 # 没有mainloop 则是静态window 传入值不会有循环
 # window.mainloop会让window不断刷新
 # mainloop相当很大的while循环 点击一次更新一次
+mystd.restoreStd()  # 恢复标准输出
