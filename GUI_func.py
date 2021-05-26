@@ -132,7 +132,12 @@ def run_SRCNN():
     # 详细了解 见 SRCNN_test/ README
     cmd = 'SRCNN.exe ' + file_input + ' ' + file_output + ' Model\\SRCNN\\' + use_model + '.mat'
     print('cmd：' + cmd)
-    os.system(cmd)  # 此处输出窗口乱码，File-->Settings-->Editor-->File Encodings: 全局编码改为GBK
+    # system/popen 详见 tk_stdout说明
+    # os.system(cmd)  # 此处输出窗口乱码，File-->Settings-->Editor-->File Encodings: 全局编码改为GBK
+    file = os.popen(cmd)  # cmd执行mat脚本
+    info = file.read()  # 读文件
+    print(info)
+    file.close
     return
 
 
@@ -216,7 +221,7 @@ def func_chModel(listbox):
 
 # 开始 按钮
 def func_start():
-    print("========== 开始计算 参数如下 ==========")
+    print("======================================= 开始计算 参数如下 ====================================")
     print("     输入路径：" + str(file_input))
     print("     输出路径：" + str(file_output))
     print("     视频/图像：" + str(is_VideoImage))
@@ -241,3 +246,4 @@ def func_start():
     else:
         print("error：运行终止 参数错误 use_ways:"+str(use_ways))
         return False
+    print("--------------------------------------------- 完成 ------------------------------------------")

@@ -12,7 +12,7 @@
 % model = 'Model\SRCNN\9-1-5(ImageNet)\x3.mat';
 
 function SRCNNexe(input, output, model)
-disp('============ SRCNN.exe ============')
+disp('----------------------------------------- SRCNN.exe -----------------------------------------')
 %% 读取 ground truth
 disp( ['读取图像 ', input])
 im  = imread(input);
@@ -28,9 +28,9 @@ im_Y = single(im_Y)/255; % 归一化
 disp('----完成')
 
 %% SRCNN
-disp('SRCNN重建')
+disp('>>>>> SRCNN重建')
 im_Y_highSrcnn = SRCNN(model, im_Y); % SRCNN清晰化图像
-disp('SRCNN重建完成')
+disp('>>>>> SRCNN重建完成')
 
 %% 输出
 disp( ['输出 ', output])
@@ -39,6 +39,6 @@ im_out = ycbcr2rgb(im_YCbCr);
 
 imwrite(im_out, output);
 disp('----完成')
-disp('================================')
+% disp('---------------------------------------------------------------------------------------------')
 % figure, imshow(im); title('输入');
 % figure, imshow(im_out); title('输出');
