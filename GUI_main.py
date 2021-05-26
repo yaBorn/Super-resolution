@@ -12,6 +12,8 @@ window.title('Super-resolution 超分辨率工具箱 v1.0_demo')  # 窗口名
 window.geometry('740x690')  # 设定窗口的大小(长x宽)
 window.resizable(0, 0)  # 设置窗口大小不可变
 myfront = ['Consolas', 11]  # 字体参数
+infofront = ['Consolas', 10]
+
 
 """ 框架组件 用于布局"""
 # 父组件 边框像素(1凹陷感，2框线感)->简写bd 边线风格 垂直边距 高 宽
@@ -23,7 +25,7 @@ f1.grid(row=0, column=0, padx=20, pady=20)  # 700+20+20=740 边框长+边距*2=�
 f2.grid(row=1, column=0, padx=20, pady=0)
 f3.grid(row=2, column=0, padx=20, pady=20)
 # 固定组件大小,防止子组件大小影响
-f1.grid_propagate(0)
+f1.grid_propagate(0)  # 子组件为grid布局
 f2.grid_propagate(0)
 f3.grid_propagate(0)
 
@@ -61,9 +63,9 @@ title_chvi = tk.Label(f2, text='视频/图像：', font=myfront, width=0, height
 title_chways = tk.Label(f2, text='选择算法：', font=myfront, width=0, height=0)
 title_model = tk.Label(f2, text='训练模型：', font=myfront, width=0, height=0)
 """ 列表 模型选择 """
-fl = tk.Frame(f2, borderwidth=2, relief="groove", height=100, width=160)  # 滚动条和显示框 组合框 用于布局
-scroll_model = tk.Scrollbar(fl, orient='vertical')  # 用于list的垂直滚动条
-list_model = tk.Listbox(fl, height=5, yscrollcommand=scroll_model.set)  # 创建list组件 height指定显示行数 yscrollcommand设置滚动条
+fm1 = tk.Frame(f2, borderwidth=2, relief="groove", height=100, width=160)  # 滚动条和显示框 组合框 用于布局
+scroll_model = tk.Scrollbar(fm1, orient='vertical')  # 用于list的垂直滚动条
+list_model = tk.Listbox(fm1, height=5, yscrollcommand=scroll_model.set)  # 创建list组件 height指定显示行数 yscrollcommand设置滚动条
 list_model.bind('<<ListboxSelect>>', lambda event: gui.func_chModel(listbox=list_model))  # 列表框绑定函数 参数传递
 gui.renewList(list_model, gui.model_srcnn)  # 更新list
 scroll_model.config(command=list_model.yview)  # 操作滚动条 调用list显示
@@ -93,14 +95,24 @@ title_chways.grid(row=0, column=1, padx=80, pady=0)
 radio_way.grid(row=1, column=1, padx=0, pady=0)
 radio_way2.grid(row=2, column=1, padx=0, pady=0)
 title_model.grid(row=0, column=2, padx=0, pady=0)
-fl.grid(row=0, rowspan=3, column=3, padx=0, pady=4)
-fl.grid_propagate(0)
-list_model.pack(side="left", fill="y")
+fm1.grid(row=0, rowspan=3, column=3, padx=0, pady=4)  # 组合框在f2的grid布局
+list_model.pack(side="left", fill="y")  # 列表/滚动条在fm1的pack布局 放置方向 填充方向
 scroll_model.pack(side="right", fill="both")
 
-#
-# list_model.grid(row=0, rowspan=3, column=3, padx=0, pady=4)
-# scroll_model.grid(row=0, rowspan=3, column=4, padx=0, pady=4)
+
+""" 标签 """
+title_inform = tk.Label(f3, text='控制台信息', font=myfront, width=0, height=0)
+""" 文本框 控制台信息 """
+fm2 = tk.Frame(f3, borderwidth=2, relief="groove", height=355, width=680)  # 滚动条和信息框 组合框 用于布局
+scroll_inform = tk.Scrollbar(fm2, orient='vertical', width=21)  # 垂直滚动条
+text_inform = tk.Text(fm2, yscrollcommand=scroll_inform.set, font=infofront, width=93)  # 宽高单位为字符数
+scroll_inform.config(command=text_inform.yview)  # 垂直_操作滚动条
+""" 布局 """
+title_inform.grid(row=0, column=0, padx=0, pady=4)
+fm2.grid(row=1, column=0, padx=8, pady=0)  # 组合框在 f2 的grid布局
+fm2.pack_propagate(0)  # 固定pack布局大小
+text_inform.pack(side="left", fill="both")  # 信息/滚动条在 fm2 的pack布局
+scroll_inform.pack(side="right", fill="both")
 
 
 """ 主窗口循环显示 """
