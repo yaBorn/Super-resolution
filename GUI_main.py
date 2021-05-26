@@ -37,6 +37,7 @@ title_input = tk.Label(f1, text='输入路径：', font=myfront, width=0, height
 """ 输入路径 """
 text_input = tk.Entry(f1, width=65, bd=2, show=None, state='normal', exportselection=False)  # 无密文 可写
 # 此处双击文本 与list选择模型(line:70)事件冲突 双击后list失去选择报错 指定ex=f后解决(选中文本不可复制到剪贴板)
+# 可双击选中 ctrl+C复制
 text_input.insert(0, "未选择...")  # 写入文本
 text_input.config(state='readonly')  # 写入后设为只读
 """ 输出路径 """
@@ -106,7 +107,8 @@ title_inform = tk.Label(f3, text='控制台信息', font=myfront, width=0, heigh
 """ 文本框 控制台信息 """
 fm2 = tk.Frame(f3, borderwidth=2, relief="groove", height=355, width=680)  # 滚动条和信息框 组合框 用于布局
 scroll_inform = tk.Scrollbar(fm2, orient='vertical', width=21)  # 垂直滚动条
-text_inform = tk.Text(fm2, yscrollcommand=scroll_inform.set, font=infofront, width=93)  # 宽高单位为字符数
+text_inform = tk.Text(fm2, yscrollcommand=scroll_inform.set, font=infofront, width=93, exportselection=False)
+# 宽高单位为字符数 不可复制剪切板原因见line39
 scroll_inform.config(command=text_inform.yview)  # 垂直_操作滚动条
 """ 布局 """
 title_inform.grid(row=0, column=0, padx=0, pady=4)
