@@ -67,7 +67,7 @@ weight = temp;
 patchsize = sqrt(filtersize);
 disp( '--------完成 ')
 
-disp( '----反卷积层conv4_上采样 ')
+disp( '----反卷积层conv4_上采样放大 ')
 conv3_data = zeros(outhei,outwid);
 conv2_data = conv_data{layer_num-1};
 disp( '----反卷积层conv4_开始反卷积 ')

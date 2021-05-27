@@ -47,9 +47,9 @@ model_fsrcnn = [
     "FSRCNN_x2",
     "FSRCNN_x3",
     "FSRCNN_x4",
-    "FSRCNN_x2-s",
-    "FSRCNN_x3-s",
-    "FSRCNN_x4-s",
+    "FSRCNN-s_x2",
+    "FSRCNN-s_x3",
+    "FSRCNN-s_x4",
 ]
 model_edvr = [
     "1",
@@ -132,6 +132,15 @@ def run_SRCNN():
     global use_model
     # 详细了解 见 SRCNN_test/ README
     cmd = 'SRCNN.exe ' + file_input + ' ' + file_output + ' Model\\SRCNN\\' + use_model + '.mat'
+    print('cmd：' + cmd)
+    mystd.myPopenTime(cmd)  # 运行cmd
+    return
+
+
+# 调用exe FSRCNN
+def run_FSRCNN():
+    global use_model
+    cmd = 'FSRCNN.exe ' + file_input + ' ' + file_output + ' Model\\FSRCNN\\' + use_model + '.mat'
     print('cmd：' + cmd)
     mystd.myPopenTime(cmd)  # 运行cmd
     return
@@ -235,7 +244,7 @@ def func_start():
         run_SRCNN()
     elif use_ways == 'FSRCNN':
         print("run：图像_FSRCNN")
-        # run_FSRCNN()
+        run_FSRCNN()
     elif use_ways == 'EDVR':
         print("run：视频_EDVR")
         # run_EDVR()
