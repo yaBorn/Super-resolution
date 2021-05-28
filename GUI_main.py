@@ -1,6 +1,10 @@
 """
     图形界面
 """
+# TODO:
+#  插帧功能：
+#       Paper: https://arxiv.org/abs/2011.06294
+#       Code: https://github.com/hzwer/RIFE
 import tkinter as tk  # 使用Tkinter_GUI包
 from tkinter import StringVar
 import GUI_func as gui
