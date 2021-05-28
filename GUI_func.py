@@ -97,8 +97,8 @@ def renewRadioVI(radio1, radio2, listbox):
         radio2.config(text='FSRCNN', value='FSRCNN', command=lambda: func_Ways(ch='FSRCNN', listbox=listbox))
 
     elif is_VideoImage == 'video':  # 视频
-        radio1.config(text='EDVR', value='EDVR', command=lambda: func_Ways(ch='EDVR', listbox=listbox))
-        radio2.config(text='    ', value='EDVR', command=lambda: func_Ways(ch='EDVR', listbox=listbox))
+        radio1.config(text='SRCNN-v', value='SRCNN-v', command=lambda: func_Ways(ch='SRCNN-v', listbox=listbox))
+        radio2.config(text='    ', value='SRCNN-v', command=lambda: func_Ways(ch='SRCNN-v', listbox=listbox))
 
     else:
         print("error：更新 算法选项 失败")
@@ -192,10 +192,10 @@ def func_VideoImage(ch, radio1, radio2, listbox, r_way):
         renewList(listbox, model_srcnn)  # 更新 模型列表
     elif ch == 'video':  # 视频
         is_VideoImage = ch
-        use_ways = 'EDVR'
-        r_way.set('EDVR')
+        use_ways = 'SRCNN-v'
+        r_way.set('SRCNN-v')
         renewRadioVI(radio1, radio2, listbox)
-        renewList(listbox, model_edvr)
+        renewList(listbox, model_srcnn)
     else:
         print("error：图像/视频选项 ch-is_VideoImage:" + str(ch))
 
@@ -210,9 +210,9 @@ def func_Ways(ch, listbox):
     elif ch == 'FSRCNN':
         use_ways = ch
         renewList(listbox, model_fsrcnn)
-    elif ch == 'EDVR':
+    elif ch == 'SRCNN-v':
         use_ways = ch
-        renewList(listbox, model_edvr)
+        renewList(listbox, model_srcnn)
     else:
         print("error：算法选项 ch-use_ways:" + str(ch))
 
@@ -245,8 +245,8 @@ def func_start():
     elif use_ways == 'FSRCNN':
         print("run：图像_FSRCNN")
         run_FSRCNN()
-    elif use_ways == 'EDVR':
-        print("run：视频_EDVR")
+    elif use_ways == 'SRCNN-v':
+        print("run：视频_SRCNN")
         # run_EDVR()
     else:
         print("error：运行终止 参数错误 use_ways:"+str(use_ways))
