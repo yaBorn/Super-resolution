@@ -3,6 +3,7 @@
 % ==========================
 cata = 'videoIm/';
 mkdir 'video'; 
+
 %% 获取文件名
 % File = dir(fullfile(cata,'*.jpg'));  
 catas = dir( fullfile( cata)); % 文件夹下所有文件信息
