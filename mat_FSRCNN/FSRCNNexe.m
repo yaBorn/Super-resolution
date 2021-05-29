@@ -5,14 +5,14 @@
 %               m脚本文件被打包exe后
 %               通过python os.system方法调用
 % ====================================
-% close all;
-% clear all;
-% input  = 'lenna.bmp';
-% output  = 'lenna_out.bmp';
-% up_scale = 3; % 放大倍数 2 3 4 使用不同的训练模型 
-% model = ['Model\FSRCNN\FSRCNN-s\x',int2str(up_scale),'.mat'];
+close all;
+clear all;
+input  = 'Frame 001.png';
+output  = 'Frame 001.png';
+up_scale = 3; % 放大倍数 2 3 4 使用不同的训练模型 
+model = ['Model\FSRCNN\FSRCNN-s\x',int2str(up_scale),'.mat'];
 
-function FSRCNNexe(input, output, model)
+% function FSRCNNexe(input, output, model)
 disp('---------------------------------------- FSRCNN.exe -----------------------------------------')
 %% 分割model，获取model放大倍率
 up_scale = strtok(model, '.mat');
@@ -56,4 +56,4 @@ imwrite(im_out, output);
 disp('----完成')
 % disp('---------------------------------------------------------------------------------------------')
 % figure, imshow(im); title('输入');
-% figure, imshow(im_out); title('输出');
+figure, imshow(im_out); title('输出');
