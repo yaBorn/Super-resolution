@@ -1,1 +1,1 @@
-mcc -m FSRCNNv.m
+mcc -m SRCNNv.m

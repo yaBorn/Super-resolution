@@ -11,11 +11,11 @@ import tkinter_stdout as mystd
 """
 # 格式.
 format_im = ['png', 'jpeg', 'jpg', 'tiff', 'bmp']
-format_vi = ['mp4']
+format_vi = ['mp4', 'avi']
 format_file = [
-    ('图像/视频', '*.png;*.jpeg;*.jpg;*.tiff;*.bmp'),
+    ('图像/视频', '*.png;*.jpeg;*.jpg;*.tiff;*.bmp;*.mp4;*.avi'),
     ('图像', '*.png;*.jpeg;*.jpg;*.tiff;*.bmp'),
-    ('视频', '*.mp4'),
+    ('视频', '*.mp4;*.avi'),
     ('全部文件', '*.*'),
 ]
 
@@ -50,9 +50,6 @@ model_fsrcnn = [
     "FSRCNN-s_x2",
     "FSRCNN-s_x3",
     "FSRCNN-s_x4",
-]
-model_edvr = [
-    "1",
 ]
 
 """
@@ -98,7 +95,7 @@ def renewRadioVI(radio1, radio2, listbox):
 
     elif is_VideoImage == 'video':  # 视频
         radio1.config(text='SRCNN-v', value='SRCNN-v', command=lambda: func_Ways(ch='SRCNN-v', listbox=listbox))
-        radio2.config(text='    ', value='SRCNN-v', command=lambda: func_Ways(ch='SRCNN-v', listbox=listbox))
+        radio2.config(text='FSRCNN-V    ', value='FSRCNN-v', command=lambda: func_Ways(ch='FSRCNN-v', listbox=listbox))
 
     else:
         print("error：更新 算法选项 失败")
@@ -141,6 +138,24 @@ def run_SRCNN():
 def run_FSRCNN():
     global use_model
     cmd = 'FSRCNN.exe ' + file_input + ' ' + file_output + ' Model\\FSRCNN\\' + use_model + '.mat'
+    print('cmd：' + cmd)
+    mystd.myPopenTime(cmd)  # 运行cmd
+    return
+
+
+# 调用exe SRCNNv
+def run_SRCNNv():
+    global use_model
+    cmd = 'SRCNNv.exe ' + file_input + ' ' + file_output + ' Model\\SRCNN\\' + use_model + '.mat'
+    print('cmd：' + cmd)
+    mystd.myPopenTime(cmd)  # 运行cmd
+    return
+
+
+# 调用exe FSRCNNv
+def run_FSRCNNv():
+    global use_model
+    cmd = 'FSRCNNv.exe ' + file_input + ' ' + file_output + ' Model\\FSRCNN\\' + use_model + '.mat'
     print('cmd：' + cmd)
     mystd.myPopenTime(cmd)  # 运行cmd
     return
@@ -213,6 +228,9 @@ def func_Ways(ch, listbox):
     elif ch == 'SRCNN-v':
         use_ways = ch
         renewList(listbox, model_srcnn)
+    elif ch == 'FSRCNN-v':
+        use_ways = ch
+        renewList(listbox, model_fsrcnn)
     else:
         print("error：算法选项 ch-use_ways:" + str(ch))
 
@@ -247,7 +265,10 @@ def func_start():
         run_FSRCNN()
     elif use_ways == 'SRCNN-v':
         print("run：视频_SRCNN")
-        # run_EDVR()
+        run_SRCNNv()
+    elif use_ways == 'FSRCNN-v':
+        print("run：视频_FSRCNN")
+        run_FSRCNNv()
     else:
         print("error：运行终止 参数错误 use_ways:"+str(use_ways))
         return False
